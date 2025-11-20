@@ -7,7 +7,7 @@ Y = np.array(
         [-10+20j, 26-52j, -16+32j],
         [-10+30j, -16+32j, 26-62j],
     ])
-
+#Los arrays deben ser de 1D
 V_slack=np.array([1.05+0j])
 V_pq=np.array([1+0j])
 V_pv=np.array([1.04+0j])
