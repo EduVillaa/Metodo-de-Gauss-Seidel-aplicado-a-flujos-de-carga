@@ -37,7 +37,7 @@ for n in range(0, numero_iteraciones+1):
          elif 1<t<Y.shape[0]:
             print(f"Nodo PQ: V_{t} = {V[t-1]:.4f}", "---------------------- ",f"S_{t}={S_i[t-2]:.4f}")
          elif t==Y.shape[0]:
-            print(f"Nodo PV: V_{t} correcto = {V[t-1]:.4f}", "-----------",f"S_{t}={S_i[t-4]:.4f}")
+            print(f"Nodo PV: V_{t} correcto = {V[t-1]:.4f}", "-----------",f"S_{t}={S_i[len(S_i)-1]:.4f}")
         
     if n>0:
         sum3=0    
