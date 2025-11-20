@@ -1,5 +1,6 @@
 import numpy as np
 
+numero_iteraciones = 2
 Y = np.array(
     [
         [20-50j, -10+20j, -10+30j],
@@ -16,7 +17,7 @@ V_PU_sin_corregir=[]
 S_pq=np.array([-4-2.5j])
 P_pv=np.array([2])
 
-for n in range(0, 3):
+for n in range(0, numero_iteraciones+1):
     c=0
     sumQ=0
     while c<Y.shape[0]:
@@ -39,13 +40,12 @@ for n in range(0, 3):
          elif t==Y.shape[0]:
             print(f"Nodo PQ: V_{t} correcto = {V[t-1]:.4f}", "-----------",f"S_3={S_i[t-4]:.4f}")
             
-    
     if n>0:
         sum3=0    
         for z in range(0, Y.shape[0]):
             sum3 = sum3 + abs(V[z]-Vanterior[z])
             #print(V[z], "-", Vanterior[z], V[z]-Vanterior[z],abs(V[z]-Vanterior[z]))
-        print(f"Error = {sum3}")
+        print(f"Error = {sum3:.5f}")
     Vanterior = np.array(V)       
     for i in range(2, Y.shape[0]+1):
         sum1, sum2 =0,0
@@ -60,10 +60,9 @@ for n in range(0, 3):
     
     V_PU_sin_corregir.append(V[Y.shape[0]-1])    
     if n>0:
-        print(f"Nodo PQ: V_{Y.shape[0]} = {V_PU_sin_corregir[n-1]:.4f}")
+        print(f"Nodo PQ: V_{Y.shape[0]} sin corregir = {V_PU_sin_corregir[n-1]:.4f}")
 
     V[Y.shape[0]-1]=V_pv[0]*(V[Y.shape[0]-1]/np.abs(V[Y.shape[0]-1]))
-    
     print("")
     #V = np.round(V, 4)
     
