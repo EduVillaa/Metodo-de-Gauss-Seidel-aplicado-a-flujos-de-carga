@@ -11,6 +11,7 @@ V_slack=np.array([1.05+0j])
 V_pq=np.array([1+0j])
 V_pv=np.array([1.04+0j])
 V = np.concatenate((V_slack, V_pq, V_pv)) #Programa válido para redes con un solo nodo PV y lo colocamos el final
+V_PU_sin_corregir=[]
 
 S_pq=np.array([-4-2.5j])
 P_pv=np.array([2])
@@ -23,6 +24,29 @@ for n in range(0, 3):
         c+=1
     S_pv = np.array([P_pv[0]-np.imag(sumQ*np.conjugate(V[Y.shape[0]-1]))*1j])
     S_i = np.concatenate((S_pq, S_pv))
+ 
+    I_slack = 0 + 0j
+    for a in range(Y.shape[0]):
+        I_slack += Y[0, a] * V[a]
+    S_slack = V_slack * np.conjugate(I_slack)
+    
+    print(f"Iteración {n}:")
+    for t in range(1, Y.shape[0]+1):
+         if t==1:
+            print(f"Nodo slack: V_{t} = {V[t-1]:.4f}", "------------------ ",f"S_1={S_slack[0]:.4f}")
+         elif 1<t<Y.shape[0]:
+            print(f"Nodo PV: V_{t} = {V[t-1]:.4f}", "---------------------- ",f"S_2={S_i[t-2]:.4f}")
+         elif t==Y.shape[0]:
+            print(f"Nodo PQ: V_{t} correcto = {V[t-1]:.4f}", "-----------",f"S_3={S_i[t-4]:.4f}")
+            
+    
+    if n>0:
+        sum3=0    
+        for z in range(0, Y.shape[0]):
+            sum3 = sum3 + abs(V[z]-Vanterior[z])
+            #print(V[z], "-", Vanterior[z], V[z]-Vanterior[z],abs(V[z]-Vanterior[z]))
+        print(f"Error = {sum3}")
+    Vanterior = np.array(V)       
     for i in range(2, Y.shape[0]+1):
         sum1, sum2 =0,0
         for j in range(1, i):
@@ -34,24 +58,15 @@ for n in range(0, 3):
         V_i=(np.conjugate(S_i[i-2])/np.conjugate(V[i-1])-sum1-sum2)/Y[i-1][i-1]
         V[i-1]=V_i
     
-    I_slack = 0 + 0j
-    for a in range(Y.shape[0]):
-        I_slack += Y[0, a] * V[a]
-    S_slack = V_slack * np.conjugate(I_slack)
-    
-    print(f"Iteración {n+1}:")
-    for t in range(1, Y.shape[0]+1):
-        if t==1:
-            print(f"Nodo slack: V_{t}={V[t-1]:.4f}", "------------------ ",f"S_1={S_slack[0]:.4f}")
-        elif 1<t<Y.shape[0]:
-            print(f"Nodo PV: V_{t}={V[t-1]:.4f}", "---------------------- ",f"S_2={S_i[t-2]:.4f}")
-        elif t==Y.shape[0]:
-            print(f"Nodo PQ: V_{t}={V[t-1]:.4f}", "----------------------",f"S_3={S_i[t-4]:.4f}")
-        
+    V_PU_sin_corregir.append(V[Y.shape[0]-1])    
+    if n>0:
+        print(f"Nodo PQ: V_{Y.shape[0]} = {V_PU_sin_corregir[n-1]:.4f}")
+
     V[Y.shape[0]-1]=V_pv[0]*(V[Y.shape[0]-1]/np.abs(V[Y.shape[0]-1]))
-    print(f"Nodo PQ: V_{Y.shape[0]} correcto= {V[Y.shape[0]-1]:.4f}")
+    
     print("")
-    V = np.round(V, 4)
+    #V = np.round(V, 4)
+    
 
 
 
