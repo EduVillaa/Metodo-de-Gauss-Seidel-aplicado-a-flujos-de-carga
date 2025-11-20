@@ -34,11 +34,11 @@ for n in range(0, numero_iteraciones+1):
     print(f"Iteración {n}:")
     for t in range(1, Y.shape[0]+1):
          if t==1:
-            print(f"Nodo slack: V_{t} = {V[t-1]:.4f}", "------------------ ",f"S_1={S_slack[0]:.4f}")
+            print(f"Nodo slack: V_{t} = {V[t-1]:.4f}", "------------------ ",f"S_{t}={S_slack[0]:.4f}")
          elif 1<t<Y.shape[0]:
-            print(f"Nodo PV: V_{t} = {V[t-1]:.4f}", "---------------------- ",f"S_2={S_i[t-2]:.4f}")
+            print(f"Nodo PV: V_{t} = {V[t-1]:.4f}", "---------------------- ",f"S_{t}={S_i[t-2]:.4f}")
          elif t==Y.shape[0]:
-            print(f"Nodo PQ: V_{t} correcto = {V[t-1]:.4f}", "-----------",f"S_3={S_i[t-4]:.4f}")
+            print(f"Nodo PQ: V_{t} correcto = {V[t-1]:.4f}", "-----------",f"S_{t}={S_i[t-4]:.4f}")
             
     if n>0:
         sum3=0    
